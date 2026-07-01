@@ -59,7 +59,7 @@ export default function Otp() {
   };
 
   const handleVerify = () => {
-    if (!isValid || isSubmitting) return;
+    if (!isValid) return;
       router.navigate({
         pathname: "/(auth)/biodata",
         params: { role: role },
@@ -161,13 +161,9 @@ export default function Otp() {
           onPress={handleVerify}
           className={`h-14 rounded-2xl justify-center items-center ${isValid ? "bg-blue-500" : "bg-blue-500/40"}`}
         >
-          {isSubmitting ? (
-            <ActivityIndicator color="#FFFFFF" />
-          ) : (
             <Text className="text-white text-base font-semibold font-['Poppins']">
               Verify & Proceed
             </Text>
-          )}
         </Pressable>
       </View>
     </SafeAreaView>
