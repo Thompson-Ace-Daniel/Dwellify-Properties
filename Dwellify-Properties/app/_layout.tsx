@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { GestureHandlerRootView } from "react-native-gesture-handler"; // Added this global handler import
 import "react-native-reanimated";
 import "../global.css";
 
@@ -20,18 +21,23 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="modal"
-          options={{
-            presentation: "modal",
-            title: "Modal",
-            headerShown: false,
-          }}
-        />
-      </Stack>
-      <StatusBar style="auto" />
+      {/* The GestureHandlerRootView must wrap the navigator stack 
+        with flex-1 to map gesture tracking points to the edge of the device display screen.
+      */}
+      <GestureHandlerRootView className="flex-1">
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="modal"
+            options={{
+              presentation: "modal",
+              title: "Modal",
+              headerShown: false,
+            }}
+          />
+        </Stack>
+        <StatusBar style="auto" />
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }

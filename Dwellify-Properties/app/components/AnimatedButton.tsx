@@ -1,6 +1,6 @@
 // components/AnimatedButton.tsx
 import React from "react";
-import { Pressable, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { Pressable, Text, ActivityIndicator } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -12,6 +12,7 @@ interface AnimatedButtonProps {
   onPress: () => void;
   variant?: "primary" | "success" | "danger";
   loading?: boolean;
+  disabled?: boolean; // Add disabled type prop
 }
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
@@ -21,55 +22,41 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
   onPress,
   variant = "primary",
   loading,
+  disabled = false, // Default to false
 }) => {
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
+    transform: [{ scale: disabled ? 1 : scale.value }],
   }));
 
-  const getVariantStyles = () => {
-    switch (variant) {
-      case "success":
-        return { bg: "#10B981", text: "#FFFFFF" };
-      case "danger":
-        return { bg: "#EF4444", text: "#FFFFFF" };
-      default:
-        return { bg: "#2563EB", text: "#FFFFFF" };
-    }
-  };
-
-  const colors = getVariantStyles();
+  const variantClass = {
+    primary: "bg-blue-500 text-white",
+    success: "bg-emerald-500 text-white",
+    danger: "bg-red-500 text-white",
+  }[variant];
 
   return (
     <AnimatedPressable
-      style={[styles.button, { backgroundColor: colors.bg }, animatedStyle]}
-      onPressIn={() => (scale.value = withSpring(0.96))}
-      onPressOut={() => (scale.value = withSpring(1))}
-      onPress={onPress}
-      disabled={loading}
+      style={animatedStyle}
+      // Only allow scaling animations and press events if NOT disabled and NOT loading
+      onPressIn={() =>
+        !disabled && !loading && (scale.value = withSpring(0.96))
+      }
+      onPressOut={() => !disabled && !loading && (scale.value = withSpring(1))}
+      onPress={() => !disabled && !loading && onPress()}
+      disabled={disabled || loading}
+      className={`h-14 rounded-2xl justify-center items-center my-2.5 shadow-md shadow-slate-900/10 ${variantClass} ${
+        disabled ? "opacity-40" : "opacity-100"
+      }`}
     >
       {loading ? (
-        <ActivityIndicator color={colors.text} />
+        <ActivityIndicator color="#FFFFFF" />
       ) : (
-        <Text style={[styles.text, { color: colors.text }]}>{title}</Text>
+        <Text className="text-white text-base font-semibold font-['Poppins']">
+          {title}
+        </Text>
       )}
     </AnimatedPressable>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    height: 56,
-    borderRadius: 16,
-    justifyContent: "center",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 12,
-    elevation: 3,
-    marginVertical: 10,
-  },
-  text: { fontSize: 16, fontWeight: "600", fontFamily: "Poppins" },
-});

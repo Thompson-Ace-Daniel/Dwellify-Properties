@@ -1,19 +1,12 @@
 // components/AnimatedInput.tsx
 import React, { useState } from "react";
-import {
-  View,
-  TextInput,
-  Text,
-  StyleSheet,
-  TextInputProps,
-} from "react-native";
+import { View, TextInput, Text, TextInputProps } from "react-native";
 import Animated, {
   useAnimatedStyle,
   withTiming,
   interpolate,
   useSharedValue,
   withSequence,
-  withSpring,
 } from "react-native-reanimated";
 
 interface AnimatedInputProps extends TextInputProps {
@@ -54,74 +47,52 @@ export const AnimatedInput: React.FC<AnimatedInputProps> = ({
         { scale: interpolate(focusAnim.value, [0, 1], [1, 0.85]) },
       ],
       backgroundColor: focusAnim.value > 0.5 ? "#FFFFFF" : "transparent",
-      paddingHorizontal: focusAnim.value > 0.5 ? 4 : 0,
     };
   });
 
   const inputContainerStyle = useAnimatedStyle(() => {
     return {
-      borderColor: error ? "#EF4444" : isFocused ? "#2563EB" : "#E5E7EB",
-      borderWidth: isFocused || error ? 1.5 : 1,
       transform: [{ translateX: shakeAnim.value }],
     };
   });
 
   return (
-    <View style={styles.container}>
+    <View className="mb-5 relative">
       <Animated.Text
-        style={[
-          styles.label,
-          labelStyle,
-          isFocused && styles.focusedLabel,
-          error && styles.errorLabel,
-        ]}
+        style={labelStyle}
+        className={`absolute left-4 z-10 px-1 font-['Inter'] ${
+          error
+            ? "text-red-500"
+            : isFocused
+              ? "text-blue-500 font-semibold"
+              : "text-gray-400"
+        }`}
       >
         {label}
       </Animated.Text>
-      <Animated.View style={[styles.inputWrapper, inputContainerStyle]}>
+      <Animated.View
+        style={inputContainerStyle}
+        className={`h-13.5 rounded-2xl bg-white justify-center border ${
+          error
+            ? "border-red-500 border-[1.5px]"
+            : isFocused
+              ? "border-blue-500 border-[1.5px]"
+              : "border-slate-200"
+        }`}
+      >
         <TextInput
           {...props}
           value={value}
-          style={styles.input}
+          className="flex-1 px-4 text-slate-800 text-base font-['Inter']"
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          placeholderClassName="text-transparent"
         />
       </Animated.View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+      {error && (
+        <Text className="text-red-500 text-xs mt-1 ml-1 font-['Inter']">
+          {error}
+        </Text>
+      )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { marginBottom: 20, position: "relative" },
-  label: {
-    position: "absolute",
-    left: 16,
-    color: "#9CA3AF",
-    zIndex: 1,
-    fontFamily: "Inter",
-  },
-  focusedLabel: { color: "#2563EB", fontWeight: "600" },
-  errorLabel: { color: "#EF4444" },
-  inputWrapper: {
-    height: 54,
-    borderRadius: 14,
-    backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-  },
-  input: {
-    flex: 1,
-    paddingHorizontal: 16,
-    color: "#1F2937",
-    fontSize: 16,
-    fontFamily: "Inter",
-  },
-  errorText: {
-    color: "#EF4444",
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 4,
-    fontFamily: "Inter",
-  },
-});

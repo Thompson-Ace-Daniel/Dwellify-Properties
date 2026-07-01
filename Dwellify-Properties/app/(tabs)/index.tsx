@@ -9,7 +9,7 @@ export default function Index() {
       <Text className="text-white text-center text-xl">
         Hi, welcome to Dwellify-Properties
       </Text>
-      <Pressable onPress={() => router.push("/(auth)/biodata")} className="border w-xs mx-auto py-4 rounded-md bg-blue-500">
+      <Pressable onPress={() => router.push("/(auth)/onboarding1")} className="border w-xs mx-auto py-4 rounded-md bg-blue-500">
         <Text className="text-white text-center">Continue</Text>
       </Pressable>
     </SafeAreaView>
