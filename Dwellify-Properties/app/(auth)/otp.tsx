@@ -157,9 +157,9 @@ export default function Otp() {
 
       <View className="px-6 mt-auto mb-6">
         <Pressable
-          disabled={!isValid || isSubmitting}
+          disabled={!isValid}
           onPress={handleVerify}
-          className={`h-14 rounded-2xl justify-center items-center ${isValid && !isSubmitting ? "bg-blue-500" : "bg-blue-500/40"}`}
+          className={`h-14 rounded-2xl justify-center items-center ${isValid ? "bg-blue-500" : "bg-blue-500/40"}`}
         >
           {isSubmitting ? (
             <ActivityIndicator color="#FFFFFF" />

@@ -7,7 +7,7 @@ export default function OnboardingScreen1() {
   useEffect(() => {
     // Keeps side-effects strictly confined to the post-mount cycle
     const timer = setTimeout(() => {
-      router.push("/(auth)/roleselection");
+      router.push("/(auth)/onboarding2");
     }, 3000);
 
     return () => clearTimeout(timer);

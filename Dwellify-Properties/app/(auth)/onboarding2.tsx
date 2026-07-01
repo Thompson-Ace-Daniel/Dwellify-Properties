@@ -145,7 +145,7 @@ export default function PremiumBiodataScreen() {
               <AnimatedButton
                 title="Get Started"
                 variant="primary"
-                onPress={() => router.push("/(auth)/phone")}
+                onPress={() => router.push("/(auth)/roleselection")}
               />
             </View>
           </Animated.View>
