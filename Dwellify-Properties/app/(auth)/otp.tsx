@@ -6,6 +6,8 @@ import {
   TextInput,
   ActivityIndicator,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useState, useRef, useEffect } from "react";
 import { router, useLocalSearchParams, Stack } from "expo-router";
@@ -58,16 +60,16 @@ export default function Otp() {
     }
   };
 
-  const handleVerify = () => {
-    if (!isValid) return;
-      router.navigate({
-        pathname: "/(auth)/biodata",
-        params: { role: role },
-      });
-  };
-
   const finalCode = code.join("");
   const isValid = finalCode.length === 6;
+  const handleVerify = () => {
+    if (!isValid) return;
+    router.push({
+      pathname: "/(auth)/biodata",
+      params: { role: role },
+    });
+  };
+
 
   return (
     <SafeAreaView style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
@@ -87,85 +89,85 @@ export default function Otp() {
         </Text>
         <Text className="text-slate-400 font-['Inter'] text-sm mt-2 text-center">
           Enter the 6 digit code safely routed to{" "}
-          <Text className="text-slate-700 font-semibold">
-            {phoneNumber}
-          </Text>
+          <Text className="text-slate-700 font-semibold">{phoneNumber}</Text>
         </Text>
       </View>
 
-      <View className="flex-row justify-between mt-10 mb-6 px-6">
-        {code.map((digit, index) => (
-          <TextInput
-            key={index}
-            ref={(ref) => {
-              if (ref) inputs.current[index] = ref;
-            }}
-            value={digit}
-            onChangeText={(text) => handleChange(text, index)}
-            onKeyPress={({ nativeEvent }) =>
-              handleBackspace(nativeEvent.key, index)
-            }
-            onFocus={() => setFocusedIndex(index)}
-            onBlur={() => setFocusedIndex(null)}
-            keyboardType="number-pad"
-            maxLength={1}
-            autoFocus={index === 0}
-            selectTextOnFocus
-            style={{ textAlign: "center" }}
-            className={`w-12 h-14 border text-xl font-bold rounded-2xl ${
-              focusedIndex === index
-                ? "border-blue-500 bg-blue-50/20 text-blue-600"
-                : digit
-                  ? "border-slate-400 bg-slate-50 text-slate-800"
-                  : "border-slate-200 text-slate-400"
-            }`}
-          />
-        ))}
-      </View>
-      {/* 4. Resend Timer Component Layout Block */}
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          paddingHorizontal: 24,
-          marginBottom: 32,
-        }}
-      >
-        {timer > 0 ? (
-          <Text style={{ color: "#64748B", fontSize: 14 }}>
-            Resend code in{" "}
-            <Text style={{ color: "#3B82F6", fontWeight: "700" }}>
-              {timer}s
-            </Text>
-          </Text>
-        ) : (
-          <TouchableOpacity onPress={handleResend} activeOpacity={0.7}>
-            <Text
-              style={{
-                color: "#3B82F6",
-                fontSize: 14,
-                fontWeight: "600",
-                textDecorationLine: "underline",
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
+        <View className="flex-row justify-between mt-10 mb-6 px-6">
+          {code.map((digit, index) => (
+            <TextInput
+              key={index}
+              ref={(ref) => {
+                if (ref) inputs.current[index] = ref;
               }}
-            >
-              Resend verification code
-            </Text>
-          </TouchableOpacity>
-        )}
-      </View>
-
-      <View className="px-6 mt-auto mb-6">
-        <Pressable
-          disabled={!isValid}
-          onPress={handleVerify}
-          className={`h-14 rounded-2xl justify-center items-center ${isValid ? "bg-blue-500" : "bg-blue-500/40"}`}
+              value={digit}
+              onChangeText={(text) => handleChange(text, index)}
+              onKeyPress={({ nativeEvent }) =>
+                handleBackspace(nativeEvent.key, index)
+              }
+              onFocus={() => setFocusedIndex(index)}
+              onBlur={() => setFocusedIndex(null)}
+              keyboardType="number-pad"
+              maxLength={1}
+              autoFocus={index === 0}
+              selectTextOnFocus
+              style={{ textAlign: "center" }}
+              className={`w-12 h-14 border text-xl font-bold rounded-2xl ${
+                focusedIndex === index
+                  ? "border-blue-500 bg-blue-50/20 text-blue-600"
+                  : digit
+                    ? "border-slate-400 bg-slate-50 text-slate-800"
+                    : "border-slate-200 text-slate-400"
+              }`}
+            />
+          ))}
+        </View>
+        {/* 4. Resend Timer Component Layout Block */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingHorizontal: 24,
+            marginBottom: 32,
+          }}
         >
+          {timer > 0 ? (
+            <Text style={{ color: "#64748B", fontSize: 14 }}>
+              Resend code in{" "}
+              <Text style={{ color: "#3B82F6", fontWeight: "700" }}>
+                {timer}s
+              </Text>
+            </Text>
+          ) : (
+            <TouchableOpacity onPress={handleResend} activeOpacity={0.7}>
+              <Text
+                style={{
+                  color: "#3B82F6",
+                  fontSize: 14,
+                  fontWeight: "600",
+                  textDecorationLine: "underline",
+                }}
+              >
+                Resend verification code
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
+
+        <View className="px-6 mt-auto mb-6">
+          <Pressable
+            disabled={!isValid}
+            onPress={handleVerify}
+            className={`h-14 rounded-2xl justify-center items-center ${isValid ? "bg-blue-500" : "bg-blue-500/40"}`}
+          >
             <Text className="text-white text-base font-semibold font-['Poppins']">
               Verify & Proceed
             </Text>
-        </Pressable>
-      </View>
+          </Pressable>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

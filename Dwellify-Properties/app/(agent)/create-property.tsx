@@ -6,6 +6,8 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, {
@@ -51,161 +53,165 @@ export default function PremiumCreatePropertyScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+        >
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ padding: 24 }}
       >
-        <Animated.View entering={FadeInUp.duration(400)}>
-          {/* Header section */}
-          <Text style={styles.title}>New Listing</Text>
-          <Text style={styles.subtitle}>
-            Deploy a premium asset to the active marketplace.
-          </Text>
+          <Animated.View entering={FadeInUp.duration(400)}>
+            {/* Header section */}
+            <Text style={styles.title}>New Listing</Text>
+            <Text style={styles.subtitle}>
+              Deploy a premium asset to the active marketplace.
+            </Text>
 
-          {/* Premium Type Toggle Selector */}
-          <View style={styles.tabContainer}>
-            <TouchableOpacity
-              style={[styles.tab, type === "apartment" && styles.activeTab]}
-              onPress={() => setType("apartment")}
-            >
-              <Home
-                size={18}
-                color={type === "apartment" ? "#3B82F6" : "#64748B"}
-              />
-              <Text
-                style={[
-                  styles.tabText,
-                  type === "apartment" && styles.activeTabText,
-                ]}
+            {/* Premium Type Toggle Selector */}
+            <View style={styles.tabContainer}>
+              <TouchableOpacity
+                style={[styles.tab, type === "apartment" && styles.activeTab]}
+                onPress={() => setType("apartment")}
               >
-                Apartment
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.tab, type === "land" && styles.activeTab]}
-              onPress={() => setType("land")}
-            >
-              <Layers
-                size={18}
-                color={type === "land" ? "#3B82F6" : "#64748B"}
-              />
-              <Text
-                style={[
-                  styles.tabText,
-                  type === "land" && styles.activeTabText,
-                ]}
-              >
-                Land Parcel
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          {/* Media Grid Box */}
-          <Text style={styles.sectionLabel}>Media Gallery</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.imageScroll}
-          >
-            <TouchableOpacity style={styles.imagePlaceholderCard}>
-              <View style={styles.iconCircle}>
-                <Plus size={20} color="#3B82F6" />
-              </View>
-              <Text style={styles.uploadText}>Upload Images</Text>
-            </TouchableOpacity>
-          </ScrollView>
-
-          {/* Core Information Section */}
-          <Text style={styles.sectionLabel}>Asset Valuation & Title</Text>
-          <AnimatedInput
-            label="Listing Title"
-            value={form.title}
-            onChangeText={(t) => setForm({ ...form, title: t })}
-          />
-          <AnimatedInput
-            label="Price (USD)"
-            keyboardType="numeric"
-            value={form.price}
-            onChangeText={(t) => setForm({ ...form, price: t })}
-          />
-
-          {/* Dynamic Structural Switcher */}
-          <Animated.View layout={Layout.springify()}>
-            {type === "apartment" ? (
-              <Animated.View
-                entering={FadeInRight.duration(200)}
-                style={styles.row}
-              >
-                <View style={{ flex: 1, marginRight: 12 }}>
-                  <AnimatedInput
-                    label="Bedrooms"
-                    keyboardType="numeric"
-                    value={form.beds}
-                    onChangeText={(t) => setForm({ ...form, beds: t })}
-                  />
-                </View>
-                <View style={{ flex: 1 }}>
-                  <AnimatedInput
-                    label="Bathrooms"
-                    keyboardType="numeric"
-                    value={form.baths}
-                    onChangeText={(t) => setForm({ ...form, baths: t })}
-                  />
-                </View>
-              </Animated.View>
-            ) : (
-              <Animated.View entering={FadeInRight.duration(200)}>
-                <AnimatedInput
-                  label="Total Area Dimensions (e.g., 1,200 sqm)"
-                  value={form.size}
-                  onChangeText={(t) => setForm({ ...form, size: t })}
+                <Home
+                  size={18}
+                  color={type === "apartment" ? "#3B82F6" : "#64748B"}
                 />
-              </Animated.View>
-            )}
-          </Animated.View>
-
-          <AnimatedInput
-            label="Detailed Description"
-            multiline
-            numberOfLines={4}
-            value={form.desc}
-            onChangeText={(t) => setForm({ ...form, desc: t })}
-          />
-
-          {/* Location Parameters */}
-          <Text style={styles.sectionLabel}>Geographic Parameters</Text>
-          <AnimatedInput
-            label="Street Address"
-            value={form.address}
-            onChangeText={(t) => setForm({ ...form, address: t })}
-          />
-          <View style={styles.row}>
-            <View style={{ flex: 1, marginRight: 12 }}>
-              <AnimatedInput
-                label="City"
-                value={form.city}
-                onChangeText={(t) => setForm({ ...form, city: t })}
-              />
+                <Text
+                  style={[
+                    styles.tabText,
+                    type === "apartment" && styles.activeTabText,
+                  ]}
+                >
+                  Apartment
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.tab, type === "land" && styles.activeTab]}
+                onPress={() => setType("land")}
+              >
+                <Layers
+                  size={18}
+                  color={type === "land" ? "#3B82F6" : "#64748B"}
+                />
+                <Text
+                  style={[
+                    styles.tabText,
+                    type === "land" && styles.activeTabText,
+                  ]}
+                >
+                  Land Parcel
+                </Text>
+              </TouchableOpacity>
             </View>
-            <View style={{ flex: 1 }}>
-              <AnimatedInput
-                label="State"
-                value={form.state}
-                onChangeText={(t) => setForm({ ...form, state: t })}
-              />
-            </View>
-          </View>
 
-          {/* Action Trigger */}
-          <View style={styles.actionSpacer}>
-            <AnimatedButton
-              title="Publish Premium Asset"
-              loading={isSubmitting}
-              onPress={handlePublish}
+            {/* Media Grid Box */}
+            <Text style={styles.sectionLabel}>Media Gallery</Text>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.imageScroll}
+            >
+              <TouchableOpacity style={styles.imagePlaceholderCard}>
+                <View style={styles.iconCircle}>
+                  <Plus size={20} color="#3B82F6" />
+                </View>
+                <Text style={styles.uploadText}>Upload Images</Text>
+              </TouchableOpacity>
+            </ScrollView>
+
+            {/* Core Information Section */}
+            <Text style={styles.sectionLabel}>Asset Valuation & Title</Text>
+            <AnimatedInput
+              label="Listing Title"
+              value={form.title}
+              onChangeText={(t) => setForm({ ...form, title: t })}
             />
-          </View>
-        </Animated.View>
+            <AnimatedInput
+              label="Price (USD)"
+              keyboardType="numeric"
+              value={form.price}
+              onChangeText={(t) => setForm({ ...form, price: t })}
+            />
+
+            {/* Dynamic Structural Switcher */}
+            <Animated.View layout={Layout.springify()}>
+              {type === "apartment" ? (
+                <Animated.View
+                  entering={FadeInRight.duration(200)}
+                  style={styles.row}
+                >
+                  <View style={{ flex: 1, marginRight: 12 }}>
+                    <AnimatedInput
+                      label="Bedrooms"
+                      keyboardType="numeric"
+                      value={form.beds}
+                      onChangeText={(t) => setForm({ ...form, beds: t })}
+                    />
+                  </View>
+                  <View style={{ flex: 1 }}>
+                    <AnimatedInput
+                      label="Bathrooms"
+                      keyboardType="numeric"
+                      value={form.baths}
+                      onChangeText={(t) => setForm({ ...form, baths: t })}
+                    />
+                  </View>
+                </Animated.View>
+              ) : (
+                <Animated.View entering={FadeInRight.duration(200)}>
+                  <AnimatedInput
+                    label="Total Area Dimensions (e.g., 1,200 sqm)"
+                    value={form.size}
+                    onChangeText={(t) => setForm({ ...form, size: t })}
+                  />
+                </Animated.View>
+              )}
+            </Animated.View>
+
+            <AnimatedInput
+              label="Detailed Description"
+              multiline
+              numberOfLines={4}
+              value={form.desc}
+              onChangeText={(t) => setForm({ ...form, desc: t })}
+            />
+
+            {/* Location Parameters */}
+            <Text style={styles.sectionLabel}>Geographic Parameters</Text>
+            <AnimatedInput
+              label="Street Address"
+              value={form.address}
+              onChangeText={(t) => setForm({ ...form, address: t })}
+            />
+            <View style={styles.row}>
+              <View style={{ flex: 1, marginRight: 12 }}>
+                <AnimatedInput
+                  label="City"
+                  value={form.city}
+                  onChangeText={(t) => setForm({ ...form, city: t })}
+                />
+              </View>
+              <View style={{ flex: 1 }}>
+                <AnimatedInput
+                  label="State"
+                  value={form.state}
+                  onChangeText={(t) => setForm({ ...form, state: t })}
+                />
+              </View>
+            </View>
+
+            {/* Action Trigger */}
+            <View style={styles.actionSpacer}>
+              <AnimatedButton
+                title="Publish Premium Asset"
+                loading={isSubmitting}
+                onPress={handlePublish}
+              />
+            </View>
+          </Animated.View>
       </ScrollView>
+        </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
