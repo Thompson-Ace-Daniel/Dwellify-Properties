@@ -1,9 +1,11 @@
-import { View, Text, SafeAreaView, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { router, Stack, useLocalSearchParams } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { AnimatedButton } from "../components/AnimatedButton";
 import { AnimatedInput } from "../components/AnimatedInput";
+import { KeyboardAvoidingView, Platform } from "react-native";
 
 export default function Phone() {
   const { role } = useLocalSearchParams();
@@ -41,7 +43,8 @@ export default function Phone() {
         </Text>
       </View>
 
-      <View className="px-6 mt-12 flex-row items-center">
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+        <View className="px-6 mt-12 flex-row items-center">
         <View className="h-13.5 w-18.5 rounded-2xl bg-slate-50 border border-slate-200 justify-center items-center mb-5 mr-3">
           <Text className="text-base font-bold text-slate-700 font-['Poppins']">🇳🇬 +234</Text>
         </View>
@@ -61,6 +64,7 @@ export default function Phone() {
       <View className="px-6 mt-auto mb-6">
         <AnimatedButton title="Send Verification Code" disabled={!isValid} onPress={handleNext} />
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

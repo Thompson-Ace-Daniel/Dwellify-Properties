@@ -46,7 +46,7 @@ export const AnimatedButton: React.FC<AnimatedButtonProps> = ({
       onPressOut={() => !disabled && !loading && (scale.value = withSpring(1))}
       onPress={() => !disabled && !loading && onPress()}
       disabled={disabled || loading}
-      className={`h-14 rounded-2xl justify-center items-center my-2.5 shadow-md shadow-slate-900/10 ${variantClass} ${
+      className={`h-16 rounded-2xl justify-center items-center my-2.5 ${variantClass} ${
         disabled ? "opacity-40" : "opacity-100"
       }`}
     >

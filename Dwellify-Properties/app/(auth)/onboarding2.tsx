@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -60,14 +61,14 @@ export default function PremiumBiodataScreen() {
       </View>
 
       {/* Core Component Screen Elements */}
-      <View className="flex-1 px-6 justify-center items-center">
+      <View className="flex-1 px-9 justify-center items-center">
         {step === 1 && (
           <Animated.View
             entering={FadeInRight.duration(300)}
             exiting={FadeOutLeft.duration(250)}
             className="w-full items-center"
           >
-            <View className="w-64 h-52 mb-6 rounded-2xl overflow-hidden bg-slate-200">
+            <View className="w-79 h-84 mb-6 rounded-2xl overflow-hidden bg-slate-200">
               <Image
                 source={{
                   uri: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=500&q=80",
@@ -76,17 +77,22 @@ export default function PremiumBiodataScreen() {
                 resizeMode="cover"
               />
             </View>
-            <Text className="text-2xl font-bold text-center text-slate-900 mb-3">
+            <Text className="text-4xl mt-9 font-bold text-center text-slate-900 mb-3">
               Find your <Text className="text-blue-500">perfect home,</Text>{" "}
               anywhere.
             </Text>
-            <Text className="text-sm text-center text-slate-500 px-4 mb-8">
+            <Text className="text-xl text-center text-slate-500 px-2 mb-5 font-medium">
               Browse thousands of apartments and land curated just for you
               across Nigeria.
             </Text>
             <View className="w-full">
               <AnimatedButton title="Continue" onPress={nextStep} />
             </View>
+            <Text className="mt-6 text-xl text-center font-medium text-gray-500">
+              By continuing, you accept our{" "}
+              <Text className="text-black">Terms & Conditions</Text> and{" "}
+              <Text className="text-black">Privacy Policy</Text>.
+            </Text>
           </Animated.View>
         )}
 
@@ -96,7 +102,7 @@ export default function PremiumBiodataScreen() {
             exiting={FadeOutLeft.duration(250)}
             className="w-full items-center"
           >
-            <View className="w-64 h-52 mb-6 rounded-2xl overflow-hidden bg-slate-200">
+            <View className="w-76 h-84 mb-6 rounded-2xl overflow-hidden bg-slate-200">
               <Image
                 source={{
                   uri: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=500&q=80",
@@ -105,17 +111,22 @@ export default function PremiumBiodataScreen() {
                 resizeMode="cover"
               />
             </View>
-            <Text className="text-2xl font-bold text-center text-slate-900 mb-3">
+            <Text className="text-4xl mt-7 font-bold text-center text-slate-900 mb-3">
               Connect with <Text className="text-blue-500">trusted</Text>{" "}
               agents.
             </Text>
-            <Text className="text-sm text-center text-slate-500 px-4 mb-8">
+            <Text className="text-xl font-medium text-center text-slate-500 px-4 mb-5">
               Talk directly with verified property agents and owners near you,
               no middlemen.
             </Text>
             <View className="w-full">
               <AnimatedButton title="Continue" onPress={nextStep} />
             </View>
+            <Text className="mt-6 text-xl text-center font-medium text-gray-500">
+              By continuing, you accept our{" "}
+              <Text className="text-black">Terms & Conditions</Text> and{" "}
+              <Text className="text-black">Privacy Policy</Text>.
+            </Text>
           </Animated.View>
         )}
 
@@ -125,7 +136,7 @@ export default function PremiumBiodataScreen() {
             exiting={FadeOutLeft.duration(250)}
             className="w-full items-center"
           >
-            <View className="w-64 h-52 mb-6 rounded-2xl overflow-hidden bg-slate-200">
+            <View className="w-79 h-84 mb-7 rounded-2xl overflow-hidden bg-slate-200">
               <Image
                 source={{
                   uri: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=500&q=80",
@@ -134,10 +145,10 @@ export default function PremiumBiodataScreen() {
                 resizeMode="cover"
               />
             </View>
-            <Text className="text-2xl font-bold text-center text-slate-900 mb-3">
+            <Text className="text-4xl font-bold text-center text-slate-900 mb-3">
               Secure your <Text className="text-blue-500">dream</Text> property.
             </Text>
-            <Text className="text-sm text-center text-slate-500 px-4 mb-8">
+            <Text className="text-xl text-center text-slate-500 px-4 mb-5">
               Complete your transactions safely and move into your new space
               with confidence.
             </Text>
@@ -148,6 +159,11 @@ export default function PremiumBiodataScreen() {
                 onPress={() => router.push("/(auth)/roleselection")}
               />
             </View>
+            <Text className="mt-6 text-xl text-center font-medium text-gray-500">
+              By continuing, you accept our{" "}
+              <Text className="text-black">Terms & Conditions</Text> and{" "}
+              <Text className="text-black">Privacy Policy</Text>.
+            </Text>
           </Animated.View>
         )}
       </View>

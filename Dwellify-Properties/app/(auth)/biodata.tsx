@@ -6,8 +6,10 @@ import {
   TextInput,
   ScrollView,
   ActivityIndicator,
-  Pressable
+  Pressable,
+  Platform,
 } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { FadeInRight } from "react-native-reanimated";
 import { CheckCircle, User, Mail, Briefcase, Award } from "lucide-react-native";
@@ -89,128 +91,136 @@ export default function PremiumBiodataScreen() {
     <SafeAreaView style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
       <Stack.Screen options={{ headerShown: false }} />
 
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        keyboardShouldPersistTaps="handled"
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <View className="flex-1 px-6 justify-center py-8">
-          {/* Header Typography */}
-          <View className="mb-8">
-            <Text className="text-3xl font-bold text-slate-800 font-['Poppins'] tracking-tight">
-              Complete your <Text className="text-blue-500">Profile</Text>
-            </Text>
-            <Text className="text-slate-400 font-['Inter'] text-sm mt-2 leading-5">
-              {isAgent
-                ? "Provide your professional credentials to start listing properties."
-                : "Fill in your basic information to begin your home search."}
-            </Text>
-          </View>
-
-          {/* Form Fields Block */}
-          <View className="space-y-5">
-            {/* FULL NAME */}
-            <View className="mb-4">
-              <Text className="text-slate-600 font-semibold mb-2 text-sm font-['Inter']">
-                Full Name
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <View className="flex-1 px-6 justify-center py-8">
+            {/* Header Typography */}
+            <View className="mb-8">
+              <Text className="text-4xl text-center font-bold mt-20 text-slate-800 font-['Poppins'] tracking-tight">
+                Complete your <Text className="text-blue-500">Profile</Text>
               </Text>
-              <View className="flex-row items-center border border-slate-200 rounded-2xl bg-slate-50/50 px-4 h-14 focus-within:border-blue-500">
-                <User size={20} color="#94A3B8" className="mr-3" />
-                <TextInput
-                  value={fullName}
-                  onChangeText={setFullName}
-                  placeholder="John Doe"
-                  placeholderTextColor="#94A3B8"
-                  className="flex-1 text-slate-800 text-base font-['Inter'] ml-2"
-                />
-              </View>
+              <Text className="text-slate-400 font-['Inter'] text-lg  text-center mt-2 leading-5">
+                {isAgent
+                  ? "Provide your professional credentials to start listing properties."
+                  : "Tell us a bit about yourself."}
+              </Text>
             </View>
 
-            {/* EMAIL ADDRESS */}
-            <View className="mb-4">
-              <Text className="text-slate-600 font-semibold mb-2 text-sm font-['Inter']">
-                Email Address
-              </Text>
-              <View className="flex-row items-center border border-slate-200 rounded-2xl bg-slate-50/50 px-4 h-14">
-                <Mail size={20} color="#94A3B8" className="mr-3" />
-                <TextInput
-                  value={email}
-                  onChangeText={setEmail}
-                  placeholder="johndoe@example.com"
-                  placeholderTextColor="#94A3B8"
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  className="flex-1 text-slate-800 text-base font-['Inter'] ml-2"
-                />
-              </View>
-            </View>
-
-            {/* AGENT ONLY: COMPANY NAME */}
-            {isAgent && (
-              <Animated.View
-                entering={FadeInRight.duration(200)}
-                className="mb-4"
-              >
+            {/* Form Fields Block */}
+            <View className="space-y-5">
+              {/* FULL NAME */}
+              <View className="mb-4">
                 <Text className="text-slate-600 font-semibold mb-2 text-sm font-['Inter']">
-                  Agency / Business Name
+                  Full Name
                 </Text>
-                <View className="flex-row items-center border border-slate-200 rounded-2xl bg-slate-50/50 px-4 h-14">
-                  <Briefcase size={20} color="#94A3B8" className="mr-3" />
+                <View className="flex-row items-center border border-slate-200 rounded-2xl bg-slate-50/50 px-4 h-14 focus-within:border-blue-500">
+                  <User size={20} color="#94A3B8" className="mr-3" />
                   <TextInput
-                    value={companyName}
-                    onChangeText={setCompanyName}
-                    placeholder="Dwellify Real Estate Ltd"
+                    value={fullName}
+                    onChangeText={setFullName}
+                    placeholder="John Doe"
                     placeholderTextColor="#94A3B8"
                     className="flex-1 text-slate-800 text-base font-['Inter'] ml-2"
                   />
                 </View>
-              </Animated.View>
-            )}
+              </View>
 
-            {/* AGENT ONLY: LICENSE NUMBER (OPTIONAL) */}
-            {isAgent && (
-              <Animated.View
-                entering={FadeInRight.duration(300)}
-                className="mb-4"
-              >
+              {/* EMAIL ADDRESS */}
+              <View className="mb-4">
                 <Text className="text-slate-600 font-semibold mb-2 text-sm font-['Inter']">
-                  License / Registration No.{" "}
-                  <Text className="text-slate-400 font-normal">(Optional)</Text>
+                  Email Address
                 </Text>
                 <View className="flex-row items-center border border-slate-200 rounded-2xl bg-slate-50/50 px-4 h-14">
-                  <Award size={20} color="#94A3B8" className="mr-3" />
+                  <Mail size={20} color="#94A3B8" className="mr-3" />
                   <TextInput
-                    value={licenseNo}
-                    onChangeText={setLicenseNo}
-                    placeholder="RE-123456"
+                    value={email}
+                    onChangeText={setEmail}
+                    placeholder="johndoe@example.com"
                     placeholderTextColor="#94A3B8"
-                    autoCapitalize="characters"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
                     className="flex-1 text-slate-800 text-base font-['Inter'] ml-2"
                   />
                 </View>
-              </Animated.View>
-            )}
-          </View>
+              </View>
 
-          {/* Action Footer Button */}
-          <View className="mt-10">
-            <Pressable
-              disabled={!isFormValid || isSubmitting}
-              onPress={handleSubmit}
-              className={`h-14 rounded-2xl justify-center items-center ${
-                isFormValid && !isSubmitting ? "bg-blue-500" : "bg-blue-500/40"
-              }`}
-            >
-              {isSubmitting ? (
-                <ActivityIndicator color="#FFFFFF" />
-              ) : (
-                <Text className="text-white text-base font-semibold font-['Poppins']">
-                  Save & Finish
-                </Text>
+              {/* AGENT ONLY: COMPANY NAME */}
+              {isAgent && (
+                  <Animated.View
+                    entering={FadeInRight.duration(200)}
+                    className="mb-4"
+                  >
+                    <Text className="text-slate-600 font-semibold mb-2 text-sm font-['Inter']">
+                      Agency / Business Name
+                    </Text>
+                    <View className="flex-row items-center border border-slate-200 rounded-2xl bg-slate-50/50 px-4 h-14">
+                      <Briefcase size={20} color="#94A3B8" className="mr-3" />
+                      <TextInput
+                        value={companyName}
+                        onChangeText={setCompanyName}
+                        placeholder="Dwellify Real Estate Ltd"
+                        placeholderTextColor="#94A3B8"
+                        className="flex-1 text-slate-800 text-base font-['Inter'] ml-2"
+                      />
+                    </View>
+                  </Animated.View>
               )}
-            </Pressable>
+
+              {/* AGENT ONLY: LICENSE NUMBER (OPTIONAL) */}
+              {isAgent && (
+                  <Animated.View
+                    entering={FadeInRight.duration(300)}
+                    className="mb-4"
+                  >
+                    <Text className="text-slate-600 font-semibold mb-2 text-sm font-['Inter']">
+                      License / Registration No.{" "}
+                      <Text className="text-slate-400 font-normal">
+                        (Optional)
+                      </Text>
+                    </Text>
+                    <View className="flex-row items-center border border-slate-200 rounded-2xl bg-slate-50/50 px-4 h-14">
+                      <Award size={20} color="#94A3B8" className="mr-3" />
+                      <TextInput
+                        value={licenseNo}
+                        onChangeText={setLicenseNo}
+                        placeholder="RE-123456"
+                        placeholderTextColor="#94A3B8"
+                        autoCapitalize="characters"
+                        className="flex-1 text-slate-800 text-base font-['Inter'] ml-2"
+                      />
+                    </View>
+                  </Animated.View>
+              )}
+            </View>
+
+            {/* Action Footer Button */}
+            <View className="mt-10">
+              <Pressable
+                disabled={!isFormValid || isSubmitting}
+                onPress={handleSubmit}
+                className={`h-14 rounded-2xl justify-center items-center ${
+                  isFormValid && !isSubmitting
+                    ? "bg-blue-500"
+                    : "bg-blue-500/40"
+                }`}
+              >
+                {isSubmitting ? (
+                  <ActivityIndicator color="#FFFFFF" />
+                ) : (
+                  <Text className="text-white text-base font-semibold font-['Poppins']">
+                    Save & Finish
+                  </Text>
+                )}
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
